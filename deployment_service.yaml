@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-shark-service
+  namespace: mis-new
+  annotations:
+    getambassador.io/config: |
+      ---
+      apiVersion: ambassador/v1
+      kind: Mapping
+      name: amp-mapping
+      prefix: /
+      host: mis.sourcefuse.com
+      service: hello-shark-service.mis-new:8089
+spec:
+  ports:
+    - port: 8089
+      targetPort: 8080
+  selector:
+    app: hello-shark
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: mis-new
+  name: hello-shark
+  labels:
+    app: hello-shark
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-shark
+  template:
+    metadata:
+      labels:
+        app: hello-shark
+    spec:
+      containers:
+      - name: hello-shark
+        image: arushsourcefuse/nodejs-image-demo
+        ports:
+        - containerPort: 8080
+
