@@ -38,7 +38,7 @@ spec:
     spec:
       containers:
       - name: hello-shark
-        image: arushsourcefuse/nodejs-image-demo
+        image: CONTAINER_IMAGE
         ports:
         - containerPort: 8080
 
